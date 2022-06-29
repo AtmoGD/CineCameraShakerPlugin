@@ -38,7 +38,7 @@ namespace CinemachineShaker
 
         private void Start()
         {
-            shakeDuration = 0f;
+            ResetNoise();
 
             LoadCameraNoise();
         }
@@ -55,6 +55,19 @@ namespace CinemachineShaker
                 shakeDuration -= Time.deltaTime;
             }
             else
+            {
+                noise.m_FrequencyGain = 0f;
+                noise.m_AmplitudeGain = 0f;
+            }
+        }
+
+        public void ResetNoise()
+        {
+            shakeDuration = 0f;
+            shakeAmplitude = 0f;
+            shakeFrequency = 0f;
+
+            if(noise != null)
             {
                 noise.m_FrequencyGain = 0f;
                 noise.m_AmplitudeGain = 0f;
@@ -119,6 +132,8 @@ namespace CinemachineShaker
 #endif
 
             }
+
+            ResetNoise();
         }
 
         public void SetNewDefaultOptions(ShakeOptions _options)
