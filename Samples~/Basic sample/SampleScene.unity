@@ -234,7 +234,7 @@ MonoBehaviour:
   showDebugText: 1
   updateNoiseOnSettingsChanged: 1
   brain: {fileID: 1687258583}
-  shakeOptions: {fileID: 11400000, guid: 10d31c6eb6fd915428b79d700286316f, type: 2}
+  defaultShakeOptions: {fileID: 11400000, guid: 01fa8fe1e1b1ae147b5754ff0c8229f9, type: 2}
 --- !u!4 &140625124
 Transform:
   m_ObjectHideFlags: 0

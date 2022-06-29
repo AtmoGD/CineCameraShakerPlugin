@@ -1,6 +1,6 @@
 {
   "name": "com.dennishawran.cineshaker",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "tool",
   "displayName": "Cinemachine Camera Shaker",
   "description": "Easy solution for fast and customizable camera shake effects with cinemachine.",
@@ -9,6 +9,13 @@
     "name": "Dennis Hawran",
     "email": "dennis.hawran@bearbones.de"
   },
+  "samples": [
+    {
+      "displayName": "Basic sample scene",
+      "description": "Just a scene with a button. Click the button to demonstrate the camera shake effect.",
+      "path": "Samples~/Basic sample"
+    }
+  ],
   "dependencies": {
     "com.unity.cinemachine": "2.6.15"
   }
