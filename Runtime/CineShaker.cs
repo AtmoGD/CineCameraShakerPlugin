@@ -13,10 +13,10 @@ namespace CinemachineShaker
 
 #if UNITY_EDITOR
         [SerializeField] private bool showDebugText = true;
-        [SerializeField] private bool updateNoiseOnSettingsChanged = true;
 #endif
         public static CineShaker Instance { get; private set; }
 
+        [SerializeField] private bool updateNoiseOnSettingsChanged = true;
         [SerializeField] private CinemachineBrain brain;
         [SerializeField] private ShakeOptions defaultShakeOptions;
 
