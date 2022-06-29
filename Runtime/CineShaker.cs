@@ -14,8 +14,8 @@ namespace CinemachineShaker
 #if UNITY_EDITOR
         [SerializeField] private bool showDebugText = true;
         [SerializeField] private bool updateNoiseOnSettingsChanged = true;
-        [Space(20)]
 #endif
+        public static CineShaker Instance { get; private set; }
 
         [SerializeField] private CinemachineBrain brain;
         [SerializeField] private ShakeOptions defaultShakeOptions;
@@ -25,6 +25,16 @@ namespace CinemachineShaker
         private float shakeDuration;
         private float shakeAmplitude;
         private float shakeFrequency;
+
+        private void Awake()
+        {
+            if (Instance != null)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            Instance = this;
+        }
 
         private void Start()
         {

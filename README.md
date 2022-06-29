@@ -29,5 +29,5 @@ Now you are ready to use CineShaker!
 ---
 
 ## Usage
-To let the camera move you now just have to call the `Shake()` function of the CineShakerComponent. This will use the default ShakeOptions. To use different options you can use the `Shake(ShakeOptions _options)` function. To change the `defaultShakeOptions` at runtime you can call the `SetNewDefaultOptions(ShakeOptions _options)`function.
+To let the camera move you now just have to call the `Shake()` function of the CineShakerComponent. Since CineShaker is a Singleton you can call everywhere `CineShaker.Instance.Shake()`. This will use the default ShakeOptions. To use different options you can use the `Shake(ShakeOptions _options)` function. To change the `defaultShakeOptions` at runtime you can call the `SetNewDefaultOptions(ShakeOptions _options)`function.
 
