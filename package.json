@@ -1,0 +1,15 @@
+{
+  "name": "com.dennishawran.cineshaker",
+  "version": "1.0.0",
+  "type": "tool",
+  "displayName": "Cinemachine Camera Shaker",
+  "description": "Easy solution for fast and customizable camera shake effects with cinemachine.",
+  "unity": "2020.3",
+  "author": {
+    "name": "Dennis Hawran",
+    "email": "dennis.hawran@bearbones.de"
+  },
+  "dependencies": {
+    "com.unity.cinemachine": "2.6.15"
+  }
+}
