@@ -25,6 +25,7 @@ namespace CinemachineShaker
         private float shakeDuration;
         private float shakeAmplitude;
         private float shakeFrequency;
+        private float distance = 0f;
 
         private void Awake()
         {
@@ -50,8 +51,18 @@ namespace CinemachineShaker
             if (shakeDuration > 0f)
             {
                 defaultShakeOptions.GetAmplitudeAndFrequency(shakeDuration, out shakeAmplitude, out shakeFrequency);
-                noise.m_FrequencyGain = shakeFrequency;
-                noise.m_AmplitudeGain = shakeAmplitude;
+
+                if (currentShakeOptions.useFallOff)
+                {
+                    noise.m_FrequencyGain = shakeFrequency * currentShakeOptions.fallOff.Evaluate(distance);
+                    noise.m_AmplitudeGain = shakeAmplitude * currentShakeOptions.fallOff.Evaluate(distance);
+                }
+                else
+                {
+                    noise.m_FrequencyGain = shakeFrequency;
+                    noise.m_AmplitudeGain = shakeAmplitude;
+                }
+
                 shakeDuration -= Time.deltaTime;
             }
             else
@@ -67,7 +78,7 @@ namespace CinemachineShaker
             shakeAmplitude = 0f;
             shakeFrequency = 0f;
 
-            if(noise != null)
+            if (noise != null)
             {
                 noise.m_FrequencyGain = 0f;
                 noise.m_AmplitudeGain = 0f;
@@ -89,6 +100,19 @@ namespace CinemachineShaker
 
             shakeDuration = _options.shakeDuration;
             currentShakeOptions = _options;
+        }
+
+        public void ShakeWithFallOff(ShakeOptions _options, float _distance)
+        {
+            if (!_options.overrideIfAlreadyShaking && shakeDuration > 0)
+                return;
+
+            if (updateNoiseOnSettingsChanged)
+                LoadCameraNoise();
+
+            shakeDuration = _options.shakeDuration;
+            currentShakeOptions = _options;
+            distance = _distance;
         }
 
         private void LoadCinemachineBrain()
