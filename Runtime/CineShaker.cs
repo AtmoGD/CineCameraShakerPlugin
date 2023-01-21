@@ -63,6 +63,9 @@ namespace CinemachineShaker
                 }
 
                 shakes.FindAll(x => x.timeLeft <= 0f).ForEach(x => shakes.Remove(x));
+
+                noise.m_AmplitudeGain = newAmplitude;
+                noise.m_FrequencyGain = newFrequency;
             }
         }
 
