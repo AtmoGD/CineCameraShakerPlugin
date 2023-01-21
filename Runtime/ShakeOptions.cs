@@ -24,18 +24,4 @@ namespace CinemachineShaker
             frequency = shakeFrequency.Evaluate(1 - (durationLeft / shakeDuration)) * frequencyMultiplier;
         }
     }
-
-    public class Shake
-    {
-        public Shake(ShakeOptions options, float distance = 0f)
-        {
-            this.options = options;
-            this.timeLeft = options.shakeDuration;
-            this.distance = distance;
-        }
-
-        public ShakeOptions options = null;
-        public float timeLeft = 0f;
-        public float distance = 0f;
-    }
 }
