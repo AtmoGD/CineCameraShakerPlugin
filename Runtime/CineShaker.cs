@@ -60,10 +60,9 @@ namespace CinemachineShaker
                     newFrequency += addFrequency * (shake.options.useFallOff ? shake.options.fallOff.Evaluate(shake.distance) : 1f);
 
                     shake.timeLeft -= Time.deltaTime;
-
-                    if (shake.timeLeft <= 0f)
-                        shakes.Remove(shake);
                 }
+
+                shakes.FindAll(x => x.timeLeft <= 0f).ForEach(x => shakes.Remove(x));
             }
         }
 
@@ -83,9 +82,6 @@ namespace CinemachineShaker
 
         public void Shake(Shake _shake)
         {
-            if (!_shake.options.overrideIfAlreadyShaking && shakes.Count > 0)
-                return;
-
             if (updateNoiseOnSettingsChanged)
                 LoadCameraNoise();
 
