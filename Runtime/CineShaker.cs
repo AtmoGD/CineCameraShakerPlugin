@@ -20,12 +20,8 @@ namespace CinemachineShaker
         [SerializeField] private CinemachineBrain brain;
         [SerializeField] private ShakeOptions defaultShakeOptions;
 
-        private ShakeOptions currentShakeOptions;
         private CinemachineBasicMultiChannelPerlin noise;
-        private float shakeDuration;
-        private float shakeAmplitude;
-        private float shakeFrequency;
-        private float distance = 0f;
+        private List<Shake> shakes = new List<Shake>();
 
         private void Awake()
         {
@@ -48,36 +44,31 @@ namespace CinemachineShaker
         {
             if (noise == null) return;
 
-            if (shakeDuration > 0f)
+            if (shakes.Count > 0)
             {
-                defaultShakeOptions.GetAmplitudeAndFrequency(shakeDuration, out shakeAmplitude, out shakeFrequency);
+                float newAmplitude = 0f;
+                float newFrequency = 0f;
 
-                if (currentShakeOptions.useFallOff)
+                foreach (Shake shake in shakes)
                 {
-                    noise.m_FrequencyGain = shakeFrequency * currentShakeOptions.fallOff.Evaluate(distance);
-                    noise.m_AmplitudeGain = shakeAmplitude * currentShakeOptions.fallOff.Evaluate(distance);
-                }
-                else
-                {
-                    noise.m_FrequencyGain = shakeFrequency;
-                    noise.m_AmplitudeGain = shakeAmplitude;
-                }
+                    float addAmplitude = 0f;
+                    float addFrequency = 0f;
 
-                shakeDuration -= Time.deltaTime;
-            }
-            else
-            {
-                noise.m_FrequencyGain = 0f;
-                noise.m_AmplitudeGain = 0f;
+                    shake.options.GetAmplitudeAndFrequency(shake.timeLeft, out addAmplitude, out addFrequency);
+
+                    newAmplitude += addAmplitude * (shake.options.useFallOff ? shake.options.fallOff.Evaluate(shake.distance) : 1f);
+                    newFrequency += addFrequency * (shake.options.useFallOff ? shake.options.fallOff.Evaluate(shake.distance) : 1f);
+
+                    shake.timeLeft -= Time.deltaTime;
+
+                    if (shake.timeLeft <= 0f)
+                        shakes.Remove(shake);
+                }
             }
         }
 
         public void ResetNoise()
         {
-            shakeDuration = 0f;
-            shakeAmplitude = 0f;
-            shakeFrequency = 0f;
-
             if (noise != null)
             {
                 noise.m_FrequencyGain = 0f;
@@ -87,32 +78,18 @@ namespace CinemachineShaker
 
         public void Shake()
         {
-            Shake(defaultShakeOptions);
+            Shake(new Shake(defaultShakeOptions));
         }
 
-        public void Shake(ShakeOptions _options)
+        public void Shake(Shake _shake)
         {
-            if (!_options.overrideIfAlreadyShaking && shakeDuration > 0)
+            if (!_shake.options.overrideIfAlreadyShaking && shakes.Count > 0)
                 return;
 
             if (updateNoiseOnSettingsChanged)
                 LoadCameraNoise();
 
-            shakeDuration = _options.shakeDuration;
-            currentShakeOptions = _options;
-        }
-
-        public void ShakeWithFallOff(ShakeOptions _options, float _distance)
-        {
-            if (!_options.overrideIfAlreadyShaking && shakeDuration > 0)
-                return;
-
-            if (updateNoiseOnSettingsChanged)
-                LoadCameraNoise();
-
-            shakeDuration = _options.shakeDuration;
-            currentShakeOptions = _options;
-            distance = _distance;
+            shakes.Add(_shake);
         }
 
         private void LoadCinemachineBrain()
