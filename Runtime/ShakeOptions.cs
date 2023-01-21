@@ -16,7 +16,6 @@ namespace CinemachineShaker
         public float frequencyMultiplier = 1f;
         public bool useFallOff;
         public AnimationCurve fallOff;
-        public bool overrideIfAlreadyShaking;
 
         public void GetAmplitudeAndFrequency(float durationLeft, out float amplitude, out float frequency)
         {
