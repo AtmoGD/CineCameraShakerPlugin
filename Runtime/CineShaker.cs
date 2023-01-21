@@ -44,29 +44,26 @@ namespace CinemachineShaker
         {
             if (noise == null) return;
 
-            if (shakes.Count > 0)
+            float newAmplitude = 0f;
+            float newFrequency = 0f;
+
+            foreach (Shake shake in shakes)
             {
-                float newAmplitude = 0f;
-                float newFrequency = 0f;
+                float addAmplitude = 0f;
+                float addFrequency = 0f;
 
-                foreach (Shake shake in shakes)
-                {
-                    float addAmplitude = 0f;
-                    float addFrequency = 0f;
+                shake.options.GetAmplitudeAndFrequency(shake.timeLeft, out addAmplitude, out addFrequency);
 
-                    shake.options.GetAmplitudeAndFrequency(shake.timeLeft, out addAmplitude, out addFrequency);
+                newAmplitude += addAmplitude * (shake.options.useFallOff ? shake.options.fallOff.Evaluate(shake.distance) : 1f);
+                newFrequency += addFrequency * (shake.options.useFallOff ? shake.options.fallOff.Evaluate(shake.distance) : 1f);
 
-                    newAmplitude += addAmplitude * (shake.options.useFallOff ? shake.options.fallOff.Evaluate(shake.distance) : 1f);
-                    newFrequency += addFrequency * (shake.options.useFallOff ? shake.options.fallOff.Evaluate(shake.distance) : 1f);
-
-                    shake.timeLeft -= Time.deltaTime;
-                }
-
-                shakes.FindAll(x => x.timeLeft <= 0f).ForEach(x => shakes.Remove(x));
-
-                noise.m_AmplitudeGain = newAmplitude;
-                noise.m_FrequencyGain = newFrequency;
+                shake.timeLeft -= Time.deltaTime;
             }
+
+            shakes.FindAll(x => x.timeLeft <= 0f).ForEach(x => shakes.Remove(x));
+
+            noise.m_AmplitudeGain = newAmplitude;
+            noise.m_FrequencyGain = newFrequency;
         }
 
         public void ResetNoise()
